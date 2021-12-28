@@ -19,52 +19,52 @@ import Prism.test.*;
 class testArchLocally
 {
 	static public void main(String argv[])
-  {
+	{
 		FIFOScheduler sched = new FIFOScheduler(100);
-		Scaffold s = new Scaffold();
+		Scaffold scaf = new Scaffold();
 		RRobinDispatcher disp = new RRobinDispatcher(sched, 10);
-		s.dispatcher=disp;
-		s.scheduler=sched;
+		scaf.dispatcher=disp;
+		scaf.scheduler=sched;
 
 		Architecture arch = new Architecture("Demo");
-		arch.scaffold=s;
+		arch.scaffold=scaf;
 
 		AbstractImplementation addition = new Addition();
-		Component t = new Component("add", addition);
-		t.scaffold=s;
+		Component addComp = new Component("add", addition);
+		addComp.scaffold=scaf;
 
 		AbstractImplementation subtract = new Subtract();
-		Component sub = new Component("Sub", subtract);
-		sub.scaffold=s;
+		Component subComp = new Component("Sub", subtract);
+		subComp.scaffold=scaf;
 
-    GUI gui = new GUI();
-    Component b = new Component("GUI", gui);
-		b.scaffold=s;
-		Connector conn1 = new Connector("conn1");
-		conn1.scaffold =s;
+		AbstractImplementation gui = new GUI();
+		Component guiComp = new Component("GUI", gui);
+		guiComp.scaffold=scaf;
+		Connector conn = new Connector("conn");
+		conn.scaffold =scaf;
 
-		arch.add(b);
-		arch.add(conn1);
-		arch.add(t);
-		arch.add(sub);
+		arch.add(guiComp);
+		arch.add(conn);
+		arch.add(addComp);
+		arch.add(subComp);
 
 		Port subReplyPort = new Port("subReplyPort", PrismConstants.REPLY);
-		sub.addCompPort (subReplyPort);
-		Port conn1RequestPort1 = new Port("conn1RequestPort1", PrismConstants.REQUEST);
-		conn1.addConnPort(conn1RequestPort1);
-		arch.weld(subReplyPort, conn1RequestPort1);
+		subComp.addCompPort (subReplyPort);
+		Port connRequestPort1 = new Port("connRequestPort1", PrismConstants.REQUEST);
+		conn.addConnPort(connRequestPort1);
+		arch.weld(subReplyPort, connRequestPort1);
 
-		Port tReplyPort = new Port("tReplyPort", PrismConstants.REPLY);
-		t.addCompPort(tReplyPort);
-		Port conn1RequestPort2 = new Port("conn1RequestPort2", PrismConstants.REQUEST);
-		conn1.addConnPort(conn1RequestPort2);
-		arch.weld(tReplyPort, conn1RequestPort2);
+		Port addReplyPort = new Port("addReplyPort", PrismConstants.REPLY);
+		addComp.addCompPort(addReplyPort);
+		Port connRequestPort2 = new Port("connRequestPort2", PrismConstants.REQUEST);
+		conn.addConnPort(connRequestPort2);
+		arch.weld(addReplyPort, connRequestPort2);
 
-		Port bRequestPort = new Port ("bRequestPort", PrismConstants.REQUEST);
-		b.addCompPort(bRequestPort);
-		Port conn1ReplyPort1 = new Port("conn1ReplyPort1", PrismConstants.REPLY);
-		conn1.addConnPort(conn1ReplyPort1);
-		arch.weld(bRequestPort, conn1ReplyPort1);
+		Port guiRequestPort = new Port ("guiRequestPort", PrismConstants.REQUEST);
+		guiComp.addCompPort(guiRequestPort);
+		Port connReplyPort1 = new Port("connReplyPort1", PrismConstants.REPLY);
+		conn.addConnPort(connReplyPort1);
+		arch.weld(guiRequestPort, connReplyPort1);
 
 		disp.start();
 		arch.start();
