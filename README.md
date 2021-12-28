@@ -1,4 +1,4 @@
-# prism_mw
+# prism_mw_java
 prism_mw java版，来自[Prism-MW](http://csse.usc.edu/~softarch/Prism/)项目
 
 # 参考
