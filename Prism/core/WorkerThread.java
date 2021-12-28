@@ -108,7 +108,7 @@ class WorkerThread extends Thread {
 				System.out.println("Caught exception " + e1.toString() + " in " + toString()+ "while dispatching the event "+ e.name); 
 				e1.printStackTrace();
 			}
-			yield();
+			Thread.yield();
 			
 			if (timeStep > 0)
 			{
